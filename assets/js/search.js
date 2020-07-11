@@ -66,24 +66,16 @@ function buildGIFCard(gifItem, isSaved) {
     const newGifElement = document.createElement("article");
     newGifElement.classList.add("gif-card");
     newGifElement.id = gifItem.id;
+    newGifElement.onclick = function() {
+        console.log("tezo,toze")
+        sessionStorage.setItem("song", gifItem.id.toString())
+        const player = document.getElementById("player");
+        player.click();
+    };
 
-    // Append image to card
-    const gifImageElement = document.createElement('video');
-    gifImageElement.autoplay = true;
-    gifImageElement.loop = true;
-    gifImageElement.muted = true;
-    gifImageElement.setAttribute('playsinline', true);
-
-    const videoSourceElement = document.createElement('source');
-    videoSourceElement.src = gifItem.images.original.mp4;
-    videoSourceElement.type = 'video/mp4';
-    gifImageElement.appendChild(videoSourceElement);
-
-    const imageSourceElement = document.createElement('img');
-    imageSourceElement.classList.add('lazyload');
-    imageSourceElement.dataset.src = gifItem.images.original.webp;
-    imageSourceElement.alt = `${gifItem.title} image`;
-    gifImageElement.appendChild(imageSourceElement);
+    // Append GIF to card
+    const gifImageElement = document.createElement('IMG');
+    gifImageElement.src = gifItem.album.cover_big;
 
     newGifElement.appendChild(gifImageElement);
 
@@ -125,7 +117,7 @@ async function searchGIFs() {
     const query = searchBar.value;
 
     // TODO: 9a - Set up a new URL object to use Giphy search endpoint
-    const url = "https://api.giphy.com/v1/gifs/search?api_key=SHpeppdEdugihurEAztKxcUlqlUIR4TC&q=" + query + "&limit=25";
+    const url = "https://api.deezer.com/search?q=" + query + "&limit=25";
     // TODO: 9b - Set proper query parameters to the newly created URL object
     const option = {
         method: 'GET',
@@ -150,16 +142,7 @@ async function searchGIFs() {
             });
             // Display every GIF
             gifs.forEach(async gif => {
-                // TODO: 9m - Get GIF from IndexedDB's database, by its ID
-                const dbGif = await db.gifs.where({
-                    id: gif.id
-                }).toArray();
-                // TODO: 9n - Create a boolean `isSaved` to check if the GIF was already saved
-                const isSaved = dbGif.length == 0 ? false : true; // replace `false` by condition
-
-                // TODO: 9g - Call the function buildGIFCard with proper parameters
-                // TIP: Use the boolean `isSaved`
-                buildGIFCard(gif, isSaved);
+                buildGIFCard(gif, false);
             });
         // TODO: 9d - If response is not valid, return
         }).catch(error => console.log(error));
