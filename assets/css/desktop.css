@@ -1,0 +1,132 @@
+#desktop-menu-bar {
+  display: block;
+}
+
+#desktop-menu-bar ul {
+  display: flex;
+  justify-content: start;
+  list-style: none;
+  margin: 0 auto;
+  max-width: 1920px;
+  padding: 1em;
+}
+
+#desktop-menu-bar ul > li > a {
+  align-items: center;
+  color: #000;
+  display: flex;
+  margin-right: 1em;
+  text-decoration: none;
+}
+
+#desktop-menu-bar ul > li.active > a.trending-tabitem {
+  color: #d32f2f;
+}
+
+#desktop-menu-bar ul > li.active > a.search-tabitem {
+  color: #2e7d32;
+}
+
+#desktop-menu-bar ul > li.active > a.saved-tabitem {
+  color: #1976d2;
+}
+
+#desktop-menu-bar ul > li.active > a.player-tabitem {
+  color: #AB41C8;
+}
+
+#desktop-menu-bar ul > li > a svg {
+  font-size: 2em;
+  margin-right: 5px;
+}
+
+#mobile-tab-bar {
+  display: none;
+}
+
+#player {
+  width: 500px;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#player-image {
+  height: 400px;
+}
+
+#buttons {
+  height: 50px;
+  width: 100%;
+  margin-top: 50px;
+  position:relative;
+  top:10%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+#play,#next,#pre {
+  width: 50px;
+  height: 50px;
+  border: 0;
+  background-color:royalblue;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+#next {
+  width: 30px;
+  height: 30px;
+  left: 70%;
+}
+
+#pre {
+  width: 30px;
+  height: 30px;
+  left: 30%;
+}
+
+#play img,#next img,#pre img{
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+#seek-bar{
+  width: 250px;
+  height: 5px;
+  background-color:gray;
+  display: flex;
+  border-radius: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+#fill{
+  height: 5px;
+  background-color:royalblue;
+  border-radius: 20px;
+}
+
+#handle{
+  width: 8px;
+  height: 8px;
+  background-color:royalblue;
+  border-radius: 50%;
+  margin-left: -5px;
+  transform: scale(2);
+}
+
+#seek-bar-container {
+  display: inline-block;
+  margin-left: 20px;
+  margin-right: 20px;
+}

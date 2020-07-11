@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Search | GIF Lover</title>
+    <meta charset="utf-8">
+    <meta name="description"
+        content="Search for your favorite GIFs on GIPHY and save them offline by clicking on the heart!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- TODO: 7c - Declare a theme color in meta (use #f44336 or your favorite color) -->
+    <meta name="theme_color" content="#f44336">
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/assets/images/icon-192x192.png">
+    <link name="msapplication-TileImage" type="image/png" href="/assets/images/icon-144x144.png">
+    <link rel="apple-touch-icon" href="/assets/images/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/assets/images/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/images/icon-512x512.png">
+    <link rel="apple-touch-startup-image"
+        media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+        href="/assets/images/splash-750x1334.png" />
+    <!-- TODO: 8d - Use Manifest here by using a <link> -->
+    <link rel="manifest" href="/manifest.webmanifest">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/normalize.css">
+    <link rel="stylesheet" href="/assets/css/fonts.css">
+    <link rel="stylesheet" href="/assets/css/shell.css">
+    <link rel="stylesheet" href="/assets/css/mobile.css" media="(max-width: 768px)">
+    <link rel="stylesheet" href="/assets/css/desktop.css" media="(min-width: 768px)">
+    <!-- Critical-rendering scripts -->
+    <script src="/assets/js/lazysizes.min.js" async></script>
+    <script src="/assets/js/fontawesome-pro-5.13.0.min.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>I <i class="fas fa-heart" aria-labelledby="Love"></i> GIFs</h1>
+        </div>
+    </header>
+    <nav id="desktop-menu-bar">
+        <ul>
+            <li>
+                <a class="trending-tabitem" href="/">
+                    <i class="fas fa-fire"></i>
+                    <span>Trending</span>
+                </a>
+            </li>
+            <li class="active">
+                <a class="search-tabitem" href="/search">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a class="saved-tabitem" href="/saved">
+                    <i class="fas fa-images"></i>
+                    <span>My GIFs</span>
+                </a>
+            </li>
+            <li>
+                <a class="player-tabitem" href="/player">
+                    <i class="fas fa-fire"></i>
+                    <span>Player</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <section id="search-bar">
+            <label for="query">Search awesome GIFs on GIPHY!</label>
+            <div class="search-zone">
+                <input id="query" name="query" type="text" placeholder="happy, the walking dead..." />
+                <button class="button" id="search-button" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="button" id="cancel-button" style="display: none;" aria-label="Cancel search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </section>
+        <div id="loader" class="loader" style="display: none;">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </div>
+        <section id="gifs"></section>
+    </main>
+    <nav id="mobile-tab-bar">
+        <ul>
+            <li>
+                <a class="trending-tabitem" href="/">
+                    <i class="fas fa-fire"></i>
+                    <span>Trending</span>
+                </a>
+            </li>
+            <li class="active">
+                <a class="search-tabitem" href="/search">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a class="saved-tabitem" href="/saved">
+                    <i class="fas fa-images"></i>
+                    <span>My GIFs</span>
+                </a>
+            </li>
+            <li>
+                <a class="player-tabitem" href="/player">
+                    <i class="fas fa-fire"></i>
+                    <span>Player</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Deferred scripts -->
+    <script src="/assets/js/dexie.min.js"></script>
+    <script>
+        // TODO: 4e - Declare a new local database using Dexie named 'ILoveGifs' (case-sensitive)
+        var db = new Dexie("ILoveGifs");
+        window.db = db; // Replace null here by new database objedt
+
+        // TODO: 4f - Declare a table named 'gifs' that stores the following columns: 'id', 'title', 'imageUrl', 'videoUrl'
+        db.version(1).stores({
+            gifs: "id, title, imageUrl, videoUrl"
+        });
+    </script>
+    <script src="/assets/js/search.js"></script>
+    <script>
+        // TODO: 3g - Check if navigator supports Service Workers
+        if ('serviceWorker' in navigator) { // Replace `true` by the proper condition
+            // TODO: 3h - Register your service worker (located in /sw.js)
+            navigator.serviceWorker.register('sw.js').then(registration => {
+                console.log("ServiceWorker registrated");
+            }).catch(error => console.log(error));
+        } else {
+            // TODO: 3i - If not, display a message in console
+            console.log("Service Worker not supported");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+{
+    "name": "Beatz, THE Music Player",
+    "short_name": "Beatz",
+    "description": "A sweat music player",
+    "icons": [
+        {
+            "src": "/assets/images/icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/assets/images/icon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "orientation": "portrait",
+    "start_url": "/?source=pwa",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#f44336",
+    "shortcuts": [
+        {
+            "name": "Search | GIF Lover",
+            "short_name": "Search",
+            "description": "Search a GIF",
+            "url": "/search?source=pwa",
+            "icons": {
+                "src": "/assets/images/icon-192x192.png",
+                "type": "image/png",
+                "sizes": "192x192"
+            }
+        },
+        {
+            "name": "My GIFs | GIF Lover",
+            "short_name": "My GIFs",
+            "description": "My saved GIFs",
+            "url": "/saved?source=pwa",
+            "icons": {
+                "src": "/assets/images/icon-192x192.png",
+                "type": "image/png",
+                "sizes": "192x192"
+            }
+        }
+    ]
+}
