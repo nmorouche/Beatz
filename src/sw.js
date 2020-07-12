@@ -1,9 +1,3 @@
-// Your Service Worker. You can use its instance with the keyword `self`
-// Example: self.addEventListener(...)
-
-// Your Service Worker. You can use its instance with the keyword `self`
-// Example: self.addEventListener(...)
-
 const appShellCacheName = 'app-shell-v1';
 const appShellFilesToCache = [
     '/',
@@ -31,7 +25,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// TODO: 2c - On activation, remove obsolete caches
 self.addEventListener('activate', event => {
   console.log('Attempting to install service worker and cache static assets');
   event.waitUntil(
@@ -47,7 +40,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// TODO: 2d - On intercepted fetch, use the strategy of your choice to respond to requests
 self.addEventListener('fetch', event => {
   console.log('Attempting to install service worker and cache static assets');
   event.respondWith(

@@ -36,11 +36,9 @@ function addGIFToFavorite(event) {
     
     const db = window.db;
 
-    // TODO: 4a - Open IndexedDB's database
     db.open().catch(err => {
         console.error('Failed to open db : ' + (err.stack || err));
     });
-     // TODO: 4b - Save GIF data into IndexedDB's database
     db.gifs.add({
         id: parseInt(gifId),
         title: title,
@@ -50,7 +48,6 @@ function addGIFToFavorite(event) {
         preview: preview,
         duration: duration
     });
-    // TODO: 4c - Put GIF media (image and video) into a cache named "gif-images"
     const gifCacheName = 'gif-images';
     const gifToCache = [
 
@@ -63,7 +60,6 @@ function addGIFToFavorite(event) {
             })
         );
     });
-    // Set button in 'liked' state (disable the button)
     likeButton.disabled = true;
 }
 
@@ -77,12 +73,10 @@ function formatTime(time) {
 }
 
 function buildGIFCard(gifItem, isSaved) {
-    // Create GIF Card element
     const newGifElement = document.createElement("article");
     newGifElement.classList.add("gif-card");
     newGifElement.id = gifItem.id;
 
-    // Append GIF to card
     const gifImageElement = document.createElement('IMG');
     gifImageElement.src = gifItem.album.cover_big;
     gifImageElement.onclick = function() {
@@ -93,17 +87,14 @@ function buildGIFCard(gifItem, isSaved) {
 
     newGifElement.appendChild(gifImageElement);
 
-    // Append metadata to card
     const gifMetaContainerElement = document.createElement("div");
     newGifElement.appendChild(gifMetaContainerElement);
 
-    // Append title to card metadata
     const gifTitleElement = document.createElement("h3");
     const gifTitleNode = document.createTextNode(gifItem.title || 'No title');
     gifTitleElement.appendChild(gifTitleNode);
     gifMetaContainerElement.appendChild(gifTitleElement);
 
-    // Append favorite button to card metadata
     const favButtonElement = document.createElement("button");
     favButtonElement.setAttribute('aria-label', `Save ${gifItem.title}`);
     favButtonElement.classList.add("button");
@@ -120,12 +111,10 @@ function buildGIFCard(gifItem, isSaved) {
     favButtonElement.appendChild(favIconElement);
     gifMetaContainerElement.appendChild(favButtonElement);
 
-    // Disable button (set GIF as liked) if liked
     if (isSaved) {
         favButtonElement.disabled = true;
     }
 
-    // Append GIF Card to DOM
     const articlesContainerElement = document.getElementById("gifs");
     articlesContainerElement.appendChild(newGifElement);
 }
@@ -136,9 +125,7 @@ async function searchGIFs() {
 
     const query = searchBar.value;
 
-    // TODO: 9a - Set up a new URL object to use Giphy search endpoint
     const url = "https://cors-anywhere.herokuapp.com/https://api.deezer.com/search?q=" + query + "&limit=25";
-    // TODO: 9b - Set proper query parameters to the newly created URL object
     const option = {
         method: 'GET',
         headers: {
@@ -146,32 +133,23 @@ async function searchGIFs() {
         }
     }
     try {
-        // TODO: 9c - Fetch GIFs from Giphy Search endpoint
         fetch(url, option).then(response => 
-        // TODO: 9e - Convert Giphy response to json
             response.json()
         ).then(json => {
-            // TODO: 9f - Use 'response.data' in the constant 'gifs' instead of an empty array
             const gifs = json.data;
 
             const db = window.db;
 
-            // TODO: 9l - Open IndexedDB's database
             db.open().catch(err => {
                 console.error('Failed to open db : ' + (err.stack || err));
             });
-            // Display every GIF
             gifs.forEach(async gif => {
-                // TODO: 9m - Get GIF from IndexedDB's database, by its ID
                 var dataGIF = await db.gifs.where("id").equalsIgnoreCase(gif.id.toString()).toArray();
-                // TODO: 9n - Create a boolean `isSaved` to check if the GIF was already saved
                 var isSaved = dataGIF.length == 0 ? false : true; // replace false by the condition
                 buildGIFCard(gif, isSaved);
             });
-        // TODO: 9d - If response is not valid, return
         }).catch(error => console.log(error));
     } catch (e) {
-        // TODO: 9h - Display a message in console in case of error
         console.log("An error occured, please try again.");
     } finally {
         setLoading(false);
@@ -192,15 +170,12 @@ function cancelSearch() {
 }
 
 window.addEventListener('DOMContentLoaded', async function () {
-    // If enter button is pressed, trigger search
     searchBar.addEventListener('keyup', event => {
         if (event.keyCode === 13) {
             event.preventDefault();
             searchGIFs();
         }
     });
-    // On click of Search button, trigger search
     searchButton.addEventListener('click', searchGIFs);
-    // On click of Cancel button, cancel search
     cancelButton.addEventListener('click', cancelSearch);
 });

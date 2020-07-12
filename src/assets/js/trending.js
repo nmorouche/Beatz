@@ -274,12 +274,10 @@ function addGIFToFavorite(event) {
 
     const db = window.db;
 
-    // TODO: 4a - Open IndexedDB's database
     db.open().catch(err => {
         console.error('Failed to open db : ' + (err.stack || err));
     });
     console.log("test log :" + formatTime(gifs[index].duration));
-     // TODO: 4b - Save GIF data into IndexedDB's database
     db.gifs.add({
         id: gifs[index].id,
         title: gifs[index].title,
@@ -289,7 +287,6 @@ function addGIFToFavorite(event) {
         preview: gifs[index].preview,
         duration: formatTime(gifs[index].duration)
     });
-    // TODO: 4c - Put GIF media (image and video) into a cache named "gif-images"
     const gifCacheName = 'gif-images';
     const gifToCache = [
 
@@ -302,7 +299,6 @@ function addGIFToFavorite(event) {
             })
         );
     });
-    // Set button in 'liked' state (disable the button)
     likeButton.disabled = true;
     buildFavorisSong({
         id: gifs[index].id,
@@ -316,12 +312,10 @@ function addGIFToFavorite(event) {
 }
 
 function buildGIFCard(gifItem, isSaved) {
-    // Create GIF Card element
     const newGifElement = document.createElement("article");
     newGifElement.classList.add("gif-card");
     newGifElement.id = gifItem.id;
 
-    // Append GIF to card
     const gifImageElement = document.createElement('IMG');
     gifImageElement.src = gifItem.album.cover_big;
     gifImageElement.onclick = function() {
@@ -333,17 +327,14 @@ function buildGIFCard(gifItem, isSaved) {
 
     newGifElement.appendChild(gifImageElement);
 
-    // Append metadata to card
     const gifMetaContainerElement = document.createElement("div");
     newGifElement.appendChild(gifMetaContainerElement);
 
-    // Append title to card metadata
     const gifTitleElement = document.createElement("h3");
     const gifTitleNode = document.createTextNode(gifItem.title || 'No title');
     gifTitleElement.appendChild(gifTitleNode);
     gifMetaContainerElement.appendChild(gifTitleElement);
 
-    // Append favorite button to card metadata
     const favButtonElement = document.createElement("button");
     favButtonElement.setAttribute('aria-label', `Save ${gifItem.title}`);
     favButtonElement.setAttribute('id', 'fav-' + gifItem.id);
@@ -355,12 +346,10 @@ function buildGIFCard(gifItem, isSaved) {
     favButtonElement.appendChild(favIconElement);
     gifMetaContainerElement.appendChild(favButtonElement);
 
-    // Disable button (set GIF as liked) if liked
     if (isSaved) {
         favButtonElement.disabled = true;
     }
 
-    // Append GIF Card to DOM
     const articlesContainerElement = document.getElementById("gifs");
     articlesContainerElement.appendChild(newGifElement);
 }
@@ -374,9 +363,7 @@ reducePlayer.addEventListener("click", async function() {
 window.addEventListener("DOMContentLoaded", async function () {
     setLoading(true);
 
-    // TODO: 1a - Set up a new URL object to use Giphy trending endpoint
     const url = "https://cors-anywhere.herokuapp.com/https://api.deezer.com/chart/0/tracks?limit=50"
-    // TODO: 1b - Set proper query parameters to the newly created URL object
     const option = {
         method: 'GET'
     }
@@ -385,7 +372,7 @@ window.addEventListener("DOMContentLoaded", async function () {
             return response.json()
         }
         ).then(json => {
-            this.gifs = json.data; // replace array by data
+            this.gifs = json.data;
             const db = window.db;
             db.open().catch(err => {
                 console.error('Failed to open db : ' + (err.stack || err));
@@ -394,7 +381,7 @@ window.addEventListener("DOMContentLoaded", async function () {
                 const dbGif = await db.gifs.where({
                     id: gif.id.toString()
                 }).toArray();
-                const isSaved = dbGif.length == 0 ? false : true; // replace false by the condition
+                const isSaved = dbGif.length == 0 ? false : true;
                 buildGIFCard(gif, isSaved);
             });
         }).catch(error => console.log(error));
@@ -403,7 +390,6 @@ window.addEventListener("DOMContentLoaded", async function () {
             buildFavorisSong(gif);
         })
     } catch (e) {
-        // TODO: 1h - Display a message in console in case of error
         console.log("An error occured, please try again.");
     } finally {
         setLoading(false);
