@@ -54,15 +54,15 @@ function buildGIFCard(gifItem, isSaved) {
     const newGifElement = document.createElement("article");
     newGifElement.classList.add("gif-card");
     newGifElement.id = gifItem.id;
-    newGifElement.onclick = function() {
-        sessionStorage.setItem("song", gifItem.id.toString())
-        const player = document.getElementById("player");
-        player.click();
-    };
 
     // Append GIF to card
     const gifImageElement = document.createElement('IMG');
     gifImageElement.src = gifItem.album.cover_big;
+    gifImageElement.onclick = function() {
+        sessionStorage.setItem("song", gifItem.id.toString())
+        const player = document.getElementById("player");
+        player.click();
+    };
 
     newGifElement.appendChild(gifImageElement);
 
@@ -125,11 +125,10 @@ window.addEventListener("DOMContentLoaded", async function () {
             gifs.forEach(async gif => {
                 // TODO: 4e - Get GIF from IndexedDB's database, by its ID
                 const dbGif = await db.gifs.where({
-                    id: gif.id
+                    id: gif.id.toString()
                 }).toArray();
                 // TODO: 4f - Create a boolean `isSaved` to check if the GIF was already saved
                 const isSaved = dbGif.length == 0 ? false : true; // replace false by the condition
-
                 // TODO: 1g - Call the function buildGIFCard with proper parameters
                 // TIP: Use the boolean `isSaved`
                 buildGIFCard(gif, isSaved);

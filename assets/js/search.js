@@ -28,7 +28,6 @@ function addGIFToFavorite(event) {
     const gifElement = document.getElementById(gifId);
 
     const gifTitle = gifElement.querySelector('div h3').textContent;
-    const gifVideoUrl = gifElement.querySelector('source').src;
     const gifImageUrl = gifElement.querySelector('img').src;
 
     // TODO: 9i - Open IndexedDB's database
@@ -40,14 +39,12 @@ function addGIFToFavorite(event) {
     db.gifs.add({
         id: gifId,
         title: gifTitle,
-        imageUrl: gifImageUrl,
-        videoUrl: gifVideoUrl
+        imageUrl: gifImageUrl
     });
     // TODO: 9k - Put GIF media (image and video) into a cache named "gif-images"
     const gifCacheName = 'gif-images';
     const gifToCache = [
-        gifImageUrl,
-        gifVideoUrl
+        gifImageUrl
     ];
     self.addEventListener('install', (event) => {
         event.waitUntil(
@@ -66,16 +63,16 @@ function buildGIFCard(gifItem, isSaved) {
     const newGifElement = document.createElement("article");
     newGifElement.classList.add("gif-card");
     newGifElement.id = gifItem.id;
-    newGifElement.onclick = function() {
+
+    // Append GIF to card
+    const gifImageElement = document.createElement('IMG');
+    gifImageElement.src = gifItem.album.cover_big;
+    gifImageElement.onclick = function() {
         console.log("tezo,toze")
         sessionStorage.setItem("song", gifItem.id.toString())
         const player = document.getElementById("player");
         player.click();
     };
-
-    // Append GIF to card
-    const gifImageElement = document.createElement('IMG');
-    gifImageElement.src = gifItem.album.cover_big;
 
     newGifElement.appendChild(gifImageElement);
 
@@ -142,7 +139,11 @@ async function searchGIFs() {
             });
             // Display every GIF
             gifs.forEach(async gif => {
-                buildGIFCard(gif, false);
+                // TODO: 9m - Get GIF from IndexedDB's database, by its ID
+                var dataGIF = await db.gifs.where("id").equalsIgnoreCase(gif.id.toString()).toArray();
+                // TODO: 9n - Create a boolean `isSaved` to check if the GIF was already saved
+                var isSaved = dataGIF.length == 0 ? false : true; // replace false by the condition
+                buildGIFCard(gif, isSaved);
             });
         // TODO: 9d - If response is not valid, return
         }).catch(error => console.log(error));

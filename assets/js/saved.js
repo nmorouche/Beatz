@@ -3,7 +3,6 @@ async function removeGIFFromFavorite(event) {
     const gifId = likeButton.dataset.gifId;
 
     const gifElement = document.getElementById(gifId);
-    const gifVideoUrl = gifElement.querySelector('source').src;
     const gifImageUrl = gifElement.querySelector('img').src;
 
     const db = window.db;
@@ -14,11 +13,10 @@ async function removeGIFFromFavorite(event) {
     });
     // TODO: 6b - Remove GIF from local database using its ID
     await db.gifs.delete(gifId);
-    // TODO: 6c - Remove GIF media (image and video) from cache
-    caches.open("gif-cache").then(cache => {
-        cache.delete(gifVideoUrl);
-        cache.delete(gifImageUrl);
-    })
+    // TODO: 6c - Remove GIF media (image and video) from cache // Fontionne pas
+    //  caches.open("gif-cache").then(cache => {
+    //      cache.delete(gifImageUrl);
+    //  })
     // Remove GIF element
     const articlesContainerElement = document.getElementById("gifs");
     articlesContainerElement.removeChild(gifElement);
@@ -32,22 +30,13 @@ function buildGIFCard(gifItem) {
     newGifElement.id = gifItem.id;
 
     // Append image to card
-    const gifImageElement = document.createElement('video');
-    gifImageElement.autoplay = true;
-    gifImageElement.loop = true;
-    gifImageElement.muted = true;
-    gifImageElement.setAttribute('playsinline', true);
-
-    const videoSourceElement = document.createElement('source');
-    videoSourceElement.src = gifItem.videoUrl;
-    videoSourceElement.type = 'video/mp4';
-    gifImageElement.appendChild(videoSourceElement);
-
-    const imageSourceElement = document.createElement('img');
-    imageSourceElement.classList.add('lazyload');
-    imageSourceElement.dataset.src = gifItem.imageUrl;
-    imageSourceElement.alt = `${gifItem.title} image`;
-    gifImageElement.appendChild(imageSourceElement);
+    const gifImageElement = document.createElement('IMG');
+    gifImageElement.src = gifItem.imageUrl;
+    gifImageElement.onclick = function() {
+        sessionStorage.setItem("song", gifItem.id.toString())
+        const player = document.getElementById("player");
+        player.click();
+    };
 
     newGifElement.appendChild(gifImageElement);
 
