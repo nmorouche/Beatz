@@ -24,27 +24,36 @@ function setLoading(isLoading) {
 function addGIFToFavorite(event) {
     const likeButton = event.currentTarget;
     const gifId = likeButton.dataset.gifId;
+    const title = likeButton.dataset.title;
+    const album = likeButton.dataset.album;
+    const artist = likeButton.dataset.artist;
+    const preview = likeButton.dataset.preview;
+    const duration = likeButton.dataset.duration;
+    const cover_big = likeButton.dataset.cover_big;
+
 
     const gifElement = document.getElementById(gifId);
-
-    const gifTitle = gifElement.querySelector('div h3').textContent;
-    const gifImageUrl = gifElement.querySelector('img').src;
-
-    // TODO: 9i - Open IndexedDB's database
+    
     const db = window.db;
+
+    // TODO: 4a - Open IndexedDB's database
     db.open().catch(err => {
         console.error('Failed to open db : ' + (err.stack || err));
     });
-    // TODO: 9j - Save GIF data into IndexedDB's database
+     // TODO: 4b - Save GIF data into IndexedDB's database
     db.gifs.add({
-        id: gifId,
-        title: gifTitle,
-        imageUrl: gifImageUrl
+        id: parseInt(gifId),
+        title: title,
+        artist: artist,
+        album: album,
+        cover_big: cover_big,
+        preview: preview,
+        duration: duration
     });
-    // TODO: 9k - Put GIF media (image and video) into a cache named "gif-images"
+    // TODO: 4c - Put GIF media (image and video) into a cache named "gif-images"
     const gifCacheName = 'gif-images';
     const gifToCache = [
-        gifImageUrl
+
     ];
     self.addEventListener('install', (event) => {
         event.waitUntil(
@@ -58,6 +67,15 @@ function addGIFToFavorite(event) {
     likeButton.disabled = true;
 }
 
+function formatTime(time) {
+    var min = Math.floor(time / 60);
+    var sec = Math.floor(time % 60);
+    if (isNaN(min) || isNaN(sec)) {
+        return "--:--"
+    }
+    return min + ':' + ((sec<10) ? ('0' + sec) : sec);
+}
+
 function buildGIFCard(gifItem, isSaved) {
     // Create GIF Card element
     const newGifElement = document.createElement("article");
@@ -68,7 +86,6 @@ function buildGIFCard(gifItem, isSaved) {
     const gifImageElement = document.createElement('IMG');
     gifImageElement.src = gifItem.album.cover_big;
     gifImageElement.onclick = function() {
-        console.log("tezo,toze")
         sessionStorage.setItem("song", gifItem.id.toString())
         const player = document.getElementById("player");
         player.click();
@@ -91,6 +108,12 @@ function buildGIFCard(gifItem, isSaved) {
     favButtonElement.setAttribute('aria-label', `Save ${gifItem.title}`);
     favButtonElement.classList.add("button");
     favButtonElement.dataset.gifId = gifItem.id;
+    favButtonElement.dataset.title = gifItem.title;
+    favButtonElement.dataset.artist = gifItem.artist.name;
+    favButtonElement.dataset.album = gifItem.album.title;
+    favButtonElement.dataset.cover_big = gifItem.album.cover_big;
+    favButtonElement.dataset.preview = gifItem.preview;
+    favButtonElement.dataset.duration = formatTime(gifItem.duration);
     favButtonElement.onclick = addGIFToFavorite;
     const favIconElement = document.createElement("i");
     favIconElement.classList.add("fas", "fa-heart");
@@ -114,7 +137,7 @@ async function searchGIFs() {
     const query = searchBar.value;
 
     // TODO: 9a - Set up a new URL object to use Giphy search endpoint
-    const url = "https://api.deezer.com/search?q=" + query + "&limit=25";
+    const url = "https://cors-anywhere.herokuapp.com/https://api.deezer.com/search?q=" + query + "&limit=25";
     // TODO: 9b - Set proper query parameters to the newly created URL object
     const option = {
         method: 'GET',

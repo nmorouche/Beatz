@@ -4,12 +4,12 @@
     "description": "A sweat music player",
     "icons": [
         {
-            "src": "/assets/images/icon-192x192.png",
+            "src": "/src/assets/images/icon-192x192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/assets/images/icon-512x512.png",
+            "src": "/src/assets/images/icon-512x512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
@@ -27,18 +27,18 @@
             "description": "Search a GIF",
             "url": "/search?source=pwa",
             "icons": {
-                "src": "/assets/images/icon-192x192.png",
+                "src": "/src/assets/images/icon-192x192.png",
                 "type": "image/png",
                 "sizes": "192x192"
             }
         },
         {
-            "name": "My GIFs | GIF Lover",
-            "short_name": "My GIFs",
+            "name": "Beatz",
+            "short_name": "Beatz",
             "description": "My saved GIFs",
             "url": "/saved?source=pwa",
             "icons": {
-                "src": "/assets/images/icon-192x192.png",
+                "src": "/src/assets/images/icon-192x192.png",
                 "type": "image/png",
                 "sizes": "192x192"
             }

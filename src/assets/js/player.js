@@ -1,6 +1,6 @@
 var fillBar = document.getElementById("fill");
-var isReadyToPlay = false
-var player = new Audio();
+var isReadyToPlay = false;
+const player = new Audio();
 player.autoplay = true;
 var song;
 var url;
@@ -11,8 +11,7 @@ function setLoading(isLoading) {
     if (isLoading) {
         loaderElement.style.display = null;
         gifsElement.style.display = "none";
-    }
-    else {
+    } else {
         loaderElement.style.display = "none";
         gifsElement.style.display = null;
     }
@@ -23,7 +22,6 @@ function setPlayer(song) {
     const title = document.getElementById('player-title-album');
     const artist = document.getElementById('player-artist');
 
-    console.log("test :" + song.album.cover_big + song.title + ' / ' + song.album.title + song.artist.name);
     image.src = song.album.cover_big;
     title.textContent = song.title + ' / ' + song.album.title;
     artist.textContent = song.artist.name;
@@ -36,14 +34,28 @@ function play() {
     player.play();
 }
 
+function previous() {
+    player.currentTime = 0;
+}
+
+function next() {
+    player.currentTime = 0;
+}
+
+function loop() {
+    const loopButton = document.getElementById("loop");
+    player.loop = !player.loop;
+    loopButton.style.backgroundColor = (player.loop) ? "rgb(155, 102, 102)" : "rgb(65, 105, 225)";
+}
+
 function playOrPauseSong(){
     const playPauseImage = document.getElementById('play-image');
     if(player.paused){
         player.play();
-        playPauseImage.src = "/assets/images/pause.png";
+        playPauseImage.src = "/src/assets/images/pause.png";
     } else {
         player.pause();
-        playPauseImage.src = "/assets/images/play.png";
+        playPauseImage.src = "/src/assets/images/play.png";
     }
 }
 
@@ -51,7 +63,7 @@ function formatTime(time) {
     var min = Math.floor(time / 60);
     var sec = Math.floor(time % 60);
     return min + ':' + ((sec<10) ? ('0' + sec) : sec);
-  }
+}
 
 player.addEventListener('timeupdate',function(){
     const spanCurrentTime = document.getElementById('currentTime');
@@ -66,25 +78,21 @@ player.addEventListener('timeupdate',function(){
 window.addEventListener("DOMContentLoaded", async function () {
     setLoading(true);
     var song = sessionStorage.getItem('song');
-    // TODO: 1a - Set up a new URL object to use Giphy trending endpoint
-    const url = "https://api.deezer.com/track/" + song
-    // TODO: 1b - Set proper query parameters to the newly created URL object
+    const url = "https://cors-anywhere.herokuapp.com/https://api.deezer.com/track/" + song
     const option = {
         method: 'GET'
     }
     try {
-        // TODO: 1c - Fetch GIFs from Giphy Trending endpoint
         fetch(url, option)
         .then(response => response.json())
         .then(json => {
-            this.song = json; // replace array by data
+            this.song = json;
             isReadyToPlay = true;
             setPlayer(this.song);
-            player.src = this.song.preview;  //set the source of 0th song  
-            player.textContent = this.song.title; // set the title of song
+            player.src = this.song.preview; 
+            player.textContent = this.song.title;
         }).catch(error => console.log(error));
     } catch (e) {
-        // TODO: 1h - Display a message in console in case of error
         console.log("An error occured, please try again.");
     } finally {
         setLoading(false);

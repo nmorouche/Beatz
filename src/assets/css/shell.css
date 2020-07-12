@@ -36,9 +36,19 @@ nav {
   column-gap: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  margin: 0 auto;
+  width : 75%;
   max-width: 1920px;
   row-gap: 20px;
+}
+
+#gifs {
+    float: left;
+    width: 75%;
+}
+
+#favoris {
+  float: left;
+  width: 25%;
 }
 
 /* Fullscreen loader */

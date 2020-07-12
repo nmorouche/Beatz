@@ -7,18 +7,18 @@
 const appShellCacheName = 'app-shell-v1';
 const appShellFilesToCache = [
     '/',
-    '/assets/css/desktop.css',
-    '/assets/css/fonts.css',
-    '/assets/css/mobile.css',
-    '/assets/css/normalize.css',
-    '/assets/css/shell.css',
-    '/assets/fonts/balsamiq-sans-v1-latin-700.woff',
-    '/assets/js/dexie.min.js',
-    '/assets/js/fontawesome-pro-5.13.0.min.js',
-    '/assets/js/lazysizes.min.js',
-    '/assets/js/trending.js',
-    '/assets/js/saved.js',
-    '/assets/js/search.js',
+    '/src/assets/css/desktop.css',
+    '/src/assets/css/fonts.css',
+    '/src/assets/css/mobile.css',
+    '/src/assets/css/normalize.css',
+    '/src/assets/css/shell.css',
+    '/src/assets/fonts/balsamiq-sans-v1-latin-700.woff',
+    '/src/assets/js/dexie.min.js',
+    '/src/assets/js/fontawesome-pro-5.13.0.min.js',
+    '/src/assets/js/lazysizes.min.js',
+    '/src/assets/js/trending.js',
+    '/src/assets/js/saved.js',
+    '/src/assets/js/search.js',
 ];
 
 self.addEventListener('install', (event) => {
